@@ -1,11 +1,5 @@
 @import "common.css";
 
-.name-container {
-    height: calc(100% - var(--nav-bar-height)); /* removing navbar size */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
 
 @keyframes firstApeerText {
     from {
@@ -47,4 +41,11 @@
 
 .my-name:hover .name-line {
     width: 85%;
+}
+
+.name-container {
+    height: calc(100% - var(--nav-bar-height)); /* removing navbar size */
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Prueba de Nivel - Card Game</title>
-  <link rel="stylesheet" href="css/home.css">
+  <link rel="stylesheet" href="css/game.css">
 </head>
 
 <body>
@@ -33,14 +33,122 @@
     </nav>
   </header>
 
-  <div class="name-container">
-    <div class="my-name">
-      <span>
-        Wilfredo Oswaldo Hernández Argueta
-      </span>
-      <div class="name-line"></div>
+  <div class="perspective">
+    <div class="card-container">
+      <div class="flip-card ">
+        <div class="card ">
+          <div class="card__front ">
+            <div class="card__corner up">
+              <div class="card__corner__letter">A</div>
+              <img src="img/diamante.png" alt="card corner symbol">
+            </div>
+            <div class="card__corner down">
+              <div class="card__corner__letter">A</div>
+              <img src="img/diamante.png" alt="card corner symbol">
+            </div>
+            <img class="card__center" src="img/diamante.png" alt="card center symbol">
+          </div>
+          <div>
+            <div class="card__back">
+              <img src="img/back_card.png" alt="card back fase">
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <div class="flip-card">
+        <div class="card">
+          <div class="card__front ">
+            <div class="card__corner up">
+              <div class="card__corner__letter">A</div>
+              <img src="img/diamante.png" alt="card corner symbol">
+            </div>
+            <div class="card__corner down">
+              <div class="card__corner__letter">A</div>
+              <img src="img/diamante.png" alt="card corner symbol">
+            </div>
+            <img class="card__center" src="img/diamante.png" alt="card center symbol">
+          </div>
+          <div>
+            <div class="card__back">
+              <img src="img/back_card.png" alt="card back fase">
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <div class="flip-card">
+        <div class="card">
+          <div class="card__front ">
+            <div class="card__corner up">
+              <div class="card__corner__letter">A</div>
+              <img src="img/diamante.png" alt="card corner symbol">
+            </div>
+            <div class="card__corner down">
+              <div class="card__corner__letter">A</div>
+              <img src="img/diamante.png" alt="card corner symbol">
+            </div>
+            <img class="card__center" src="img/diamante.png" alt="card center symbol">
+          </div>
+          <div>
+            <div class="card__back">
+              <img src="img/back_card.png" alt="card back fase">
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <div class="flip-card">
+        <div class="card">
+          <div class="card__front ">
+            <div class="card__corner up">
+              <div class="card__corner__letter">A</div>
+              <img src="img/diamante.png" alt="card corner symbol">
+            </div>
+            <div class="card__corner down">
+              <div class="card__corner__letter">A</div>
+              <img src="img/diamante.png" alt="card corner symbol">
+            </div>
+            <img class="card__center" src="img/diamante.png" alt="card center symbol">
+          </div>
+          <div>
+            <div class="card__back">
+              <img src="img/back_card.png" alt="card back fase">
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+
+    </div>
+    <div class="table-texture">
     </div>
   </div>
+  <script>
+
+    function flipCard(card) {
+      // IF is fliped remove
+      const flipedClassName = "fliped";
+      if (card.classList.contains(flipedClassName)) {
+        card.classList.remove(flipedClassName)
+      } else {
+        card.classList.add(flipedClassName)
+      }
+    }
+
+    const cards = document.querySelectorAll(".card")
+    cards.forEach(card => {
+      card.addEventListener("click", (event) => {
+        const selectedCard = event.currentTarget;
+        flipCard(selectedCard)
+      })
+    })
+  </script>
 </body>
 
 </html>

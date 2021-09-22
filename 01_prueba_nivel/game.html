@@ -33,105 +33,105 @@
     </nav>
   </header>
 
-
-  <h2>Attepns: 2</h2>
-
-  <h2 style="text-align: center;">Time: <div id="timer">0:00</div>
-
-
-  </h2>
-
-  <button onclick="resetGame()">
-    Reset
-  </button>
-  <button onclick="stopTimer()">
-    Stop
-  </button>
-  <button onclick="startGame()">
-    Start Game
-  </button>
-
-  <div class="perspective">
-    <div class="card-container">
-
-
-
-
-
-
-
-
-    </div>
-    <div class="table-texture">
+  <div class="bg-overlay" style="display: none">
+    <div class="win-modal">
+      <h2>You just successfully finished the game 4 card memory game</h2>
+      <button onclick="playAgain()">Play Again</button>
     </div>
   </div>
-  <script>
 
-    const cardTemplate = (type) => `
-          <div class="flip-card ">
-        <div class="card ${type}">
-          <div class="card__front ">
-            <div class="card__corner up">
-              <div class="card__corner__letter">A</div>
-              <img src="img/${type}.png" alt="card corner symbol">
-            </div>
-            <div class="card__corner down">
-              <div class="card__corner__letter">A</div>
-              <img src="img/${type}.png" alt="card corner symbol">
-            </div>
-            <img class="card__center" src="img/${type}.png" alt="card center symbol">
-          </div>
-          <div>
-            <div class="card__back">
-              <img src="img/back_card.png" alt="card back fase">
-            </div>
-          </div>
+  <div class="game-container">
+    <div class="game-ui">
+      <h2>Attepns: 2</h2>
+      <h2 style="text-align: center;">Time: <div id="timer">0:00</div>
+      </h2>
+      <button onclick="resetGame()">
+        Reset
+      </button>
+      <button onclick="stopTimer()">
+        Stop
+      </button>
+      <button onclick="startGame()">
+        Start Game
+      </button>
+    </div>
+    <div class="game">
+      <div class="perspective">
+        <div class="card-container">
+        </div>
+        <div class="table-texture">
         </div>
       </div>
-    `
+    </div>
+  </div>
+  <script type="text/javascript" src="scripts/util.js"></script>
+  <script type="text/javascript" src="scripts/game.js"></script>
+  <script>
+    const modal = document.querySelector('.bg-overlay');
+    const selectedCards = [];
 
+    // CardTypes to use  
+    functionalLoop(cardTypes.length, (number) => {
+      selectedCards.push({ ...cardTypes[number - 1] }, { ...cardTypes[number - 1] })
+    });
 
+    const thisGameCards = selectedCards.randomizaArray();
+    cardContainer.innerHTML = thisGameCards.reduce((acc, ac, index) => acc + cardTemplate(ac, index), "");
 
-    const cardTypes = {
-      diamond: "diamond",
-      pica: "pica"
+    function playAgain() {
+      // Hide modal
+      modal.style.display = "none";
+      // Reset variables
     }
-
-    const cardContainer = document.querySelector(".card-container");
-
-
-
-
-
-    let innetGasd = cardTemplate(cardTypes.diamond)
-    cardContainer.innerHTML = innetGasd
-    function startGame() {
-
-
-
-    }
-
-
 
     const cards = document.querySelectorAll(".card");
     const flipedClassName = "fliped";
-    let recordedTime = 0;
-    let theInterval;
-    const timerHtml = document.getElementById('timer')
 
-
-
-
-    function millSecsToSecString(milli) {
-      const millSecs = milli % 1000;
-      const newTime = ` ${(milli - millSecs) / 1000} : ${millSecs}`
-      return newTime
+    function rotateBack(indexes) {
+      setTimeout(() => {
+        indexes.forEach(index => {
+          flipCard(cards[index]);
+        })
+      }, 500);
     }
 
+    function evaluateClick(event, index) {
+      console.log("Init", thisGameCards);
+      const otherFlipedCard = thisGameCards.find(({ done, fliped }) => fliped && !done);
+      console.log(otherFlipedCard);
+      if (otherFlipedCard) {
+        // If so check if are the same type
+        if (otherFlipedCard.name === thisGameCards[index].name) {
+          otherFlipedCard.done = true;
+          thisGameCards[index].done = true;
+          otherFlipedCard.fliped = false;
+          thisGameCards[index].fliped = false;
+        } else {
+          const otherFlipedCardIndex = thisGameCards.findIndex(({ done, fliped }) => fliped && !done);
+          // re-rotate both
+          rotateBack([index, otherFlipedCardIndex]);
+          otherFlipedCard.fliped = false;
+        }
+      } else {
+        // There is not another fliped card
+        thisGameCards[index].fliped = true;
+      }
+      console.log("FIn", thisGameCards);
+      // If all cards are done finish the game
+      if (thisGameCards.every(singleCard => singleCard.done)) {
+        alert("Game ended");
+      }
+    }
+
+    let recordedTime = 0;
+    let theInterval;
+    const timerHtml = document.getElementById('timer');
+
+
     function stopTimer() {
-      clearTimer()
-      timerHtml.innerHTML = millSecsToSecString(recordedTime)
-      alert(millSecsToSecString(recordedTime))
+      clearTimer();
+      timerHtml.innerHTML = millSecsToSecString(recordedTime);
+      alert(millSecsToSecString(recordedTime));
     }
 
     function updateClock(initTime) {
@@ -142,36 +142,37 @@
     }
 
     function clearTimer() {
-      clearInterval(theInterval)
+      clearInterval(theInterval);
     }
 
     function initClock() {
-      clearTimer()
+      clearTimer();
       var initTime = new Date().getTime();
       updateClock();
       theInterval = setInterval(updateClock, 1, initTime);
     }
 
     function resetGame() {
-      initClock()
+      initClock();
       cards.forEach(card => card.classList.remove(flipedClassName));
     }
 
     function flipCard(card) {
       // IF is fliped remove
       if (card.classList.contains(flipedClassName)) {
-        card.classList.remove(flipedClassName)
+        card.classList.remove(flipedClassName);
       } else {
-        card.classList.add(flipedClassName)
+        card.classList.add(flipedClassName);
       }
     }
 
     cards.forEach(card => {
       card.addEventListener("click", (event) => {
         const selectedCard = event.currentTarget;
-        flipCard(selectedCard)
+        flipCard(selectedCard);
       })
-    })
+    });
+
   </script>
 </body>
 

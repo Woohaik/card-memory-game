@@ -33,96 +33,32 @@
     </nav>
   </header>
 
+
+  <h2>Attepns: 2</h2>
+
+  <h2 style="text-align: center;">Time: <div id="timer">0:00</div>
+
+
+  </h2>
+
+  <button onclick="resetGame()">
+    Reset
+  </button>
+  <button onclick="stopTimer()">
+    Stop
+  </button>
+  <button onclick="startGame()">
+    Start Game
+  </button>
+
   <div class="perspective">
     <div class="card-container">
-      <div class="flip-card ">
-        <div class="card ">
-          <div class="card__front ">
-            <div class="card__corner up">
-              <div class="card__corner__letter">A</div>
-              <img src="img/diamante.png" alt="card corner symbol">
-            </div>
-            <div class="card__corner down">
-              <div class="card__corner__letter">A</div>
-              <img src="img/diamante.png" alt="card corner symbol">
-            </div>
-            <img class="card__center" src="img/diamante.png" alt="card center symbol">
-          </div>
-          <div>
-            <div class="card__back">
-              <img src="img/back_card.png" alt="card back fase">
 
-            </div>
-          </div>
 
-        </div>
-      </div>
-      <div class="flip-card">
-        <div class="card">
-          <div class="card__front ">
-            <div class="card__corner up">
-              <div class="card__corner__letter">A</div>
-              <img src="img/diamante.png" alt="card corner symbol">
-            </div>
-            <div class="card__corner down">
-              <div class="card__corner__letter">A</div>
-              <img src="img/diamante.png" alt="card corner symbol">
-            </div>
-            <img class="card__center" src="img/diamante.png" alt="card center symbol">
-          </div>
-          <div>
-            <div class="card__back">
-              <img src="img/back_card.png" alt="card back fase">
 
-            </div>
-          </div>
 
-        </div>
-      </div>
-      <div class="flip-card">
-        <div class="card">
-          <div class="card__front ">
-            <div class="card__corner up">
-              <div class="card__corner__letter">A</div>
-              <img src="img/diamante.png" alt="card corner symbol">
-            </div>
-            <div class="card__corner down">
-              <div class="card__corner__letter">A</div>
-              <img src="img/diamante.png" alt="card corner symbol">
-            </div>
-            <img class="card__center" src="img/diamante.png" alt="card center symbol">
-          </div>
-          <div>
-            <div class="card__back">
-              <img src="img/back_card.png" alt="card back fase">
 
-            </div>
-          </div>
 
-        </div>
-      </div>
-      <div class="flip-card">
-        <div class="card">
-          <div class="card__front ">
-            <div class="card__corner up">
-              <div class="card__corner__letter">A</div>
-              <img src="img/diamante.png" alt="card corner symbol">
-            </div>
-            <div class="card__corner down">
-              <div class="card__corner__letter">A</div>
-              <img src="img/diamante.png" alt="card corner symbol">
-            </div>
-            <img class="card__center" src="img/diamante.png" alt="card center symbol">
-          </div>
-          <div>
-            <div class="card__back">
-              <img src="img/back_card.png" alt="card back fase">
-
-            </div>
-          </div>
-
-        </div>
-      </div>
 
 
     </div>
@@ -131,9 +67,98 @@
   </div>
   <script>
 
+    const cardTemplate = (type) => `
+          <div class="flip-card ">
+        <div class="card ${type}">
+          <div class="card__front ">
+            <div class="card__corner up">
+              <div class="card__corner__letter">A</div>
+              <img src="img/${type}.png" alt="card corner symbol">
+            </div>
+            <div class="card__corner down">
+              <div class="card__corner__letter">A</div>
+              <img src="img/${type}.png" alt="card corner symbol">
+            </div>
+            <img class="card__center" src="img/${type}.png" alt="card center symbol">
+          </div>
+          <div>
+            <div class="card__back">
+              <img src="img/back_card.png" alt="card back fase">
+            </div>
+          </div>
+        </div>
+      </div>
+    `
+
+
+
+    const cardTypes = {
+      diamond: "diamond",
+      pica: "pica"
+    }
+
+    const cardContainer = document.querySelector(".card-container");
+
+
+
+
+
+    let innetGasd = cardTemplate(cardTypes.diamond)
+    cardContainer.innerHTML = innetGasd
+    function startGame() {
+
+
+
+    }
+
+
+
+    const cards = document.querySelectorAll(".card");
+    const flipedClassName = "fliped";
+    let recordedTime = 0;
+    let theInterval;
+    const timerHtml = document.getElementById('timer')
+
+
+
+
+    function millSecsToSecString(milli) {
+      const millSecs = milli % 1000;
+      const newTime = ` ${(milli - millSecs) / 1000} : ${millSecs}`
+      return newTime
+    }
+
+    function stopTimer() {
+      clearTimer()
+      timerHtml.innerHTML = millSecsToSecString(recordedTime)
+      alert(millSecsToSecString(recordedTime))
+    }
+
+    function updateClock(initTime) {
+      const now = new Date();
+      const milli = now.getTime() - initTime;
+      recordedTime = milli;
+      timerHtml.innerHTML = millSecsToSecString(milli);
+    }
+
+    function clearTimer() {
+      clearInterval(theInterval)
+    }
+
+    function initClock() {
+      clearTimer()
+      var initTime = new Date().getTime();
+      updateClock();
+      theInterval = setInterval(updateClock, 1, initTime);
+    }
+
+    function resetGame() {
+      initClock()
+      cards.forEach(card => card.classList.remove(flipedClassName));
+    }
+
     function flipCard(card) {
       // IF is fliped remove
-      const flipedClassName = "fliped";
       if (card.classList.contains(flipedClassName)) {
         card.classList.remove(flipedClassName)
       } else {
@@ -141,7 +166,6 @@
       }
     }
 
-    const cards = document.querySelectorAll(".card")
     cards.forEach(card => {
       card.addEventListener("click", (event) => {
         const selectedCard = event.currentTarget;

@@ -79,10 +79,8 @@ const rotateBack = (indexes) => setTimeout(
 
 const gameEnded = () => {
   finishedTime = theTimer.stop();
-  const el = document.createElement("H2");
-  el.innerHTML = `You successfully finished the 4 card memory game with a total time of: ${millSecsToSecString(finishedTime)} and ${thisGameAttempts} retrys.`;
-  const innerModal = modal.querySelector(".win-modal");
-  innerModal.prepend(el);
+  const innerModal = modal.querySelector(".win-modal h2");
+  innerModal.innerHTML = `You successfully finished the 4 card memory game with a total time of: ${millSecsToSecString(finishedTime)} and ${thisGameAttempts} retrys.`;
   modal.style.display = "block";
 }
 
@@ -108,11 +106,22 @@ function evaluateClick(index) {
 }
 
 function resetGame() {
+  document.querySelector(".win-modal__save-score .form").style.display = "block";
+  document.querySelector(".win-modal__save-score .saved").style.display = "none";
   theTimer.clearCurrentInterval()
   thisGameHTMLCards.forEach(card => card.classList.remove(flipedClassName));
   thisGameMoves = 0;
   thisGameAttempts = -1;
   setTimeout(() => {
     setGame();
-  }, 500);
+  }, 400);
+}
+
+function submitScore() {
+  const nameInput = document.getElementsByName("score")[0];
+  const name = nameInput.value;
+  if (!name) return alert("Add a Name.")
+  saveScore({ name, time: finishedTime, fails: thisGameAttempts });
+  document.querySelector(".win-modal__save-score .form").style.display = "none";
+  document.querySelector(".win-modal__save-score .saved").style.display = "block";
 }

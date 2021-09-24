@@ -1,0 +1,20 @@
+@import "common.css";
+
+.result-container {
+    text-align: center;
+    width: 85%;
+    max-width: 850px;
+    margin: 0 auto;
+}
+
+.result-container table {
+    border: 1px solid black;
+    margin-top: 50px;
+    width: 100%;
+    background-color: var(--white);
+}
+
+.result-container table thead tr th,
+td {
+    padding: 10px;
+}

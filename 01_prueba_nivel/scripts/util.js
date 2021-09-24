@@ -15,4 +15,27 @@ const randomizeArray = function () {
         map(({ value }) => value);
 };
 
+
+const saveScore = (score) => {
+    // SQUEMA:  score.name , score.time, score.fails
+    const lastScores = localStorage.getItem("scores");
+    if (lastScores) {
+        const auxScore = JSON.parse(lastScores);
+        const lastIndexWithThisName = auxScore.findIndex(lsc => lsc.name === score.name)
+        if (lastIndexWithThisName !== -1) {
+            auxScore[lastIndexWithThisName] = score;
+        } else {
+            auxScore.push(score);
+        }
+        localStorage.setItem("scores", JSON.stringify(auxScore));
+    } else {
+        localStorage.setItem("scores", JSON.stringify([score]));
+    }
+}
+
+const getScores = () => {
+    const scores = localStorage.getItem("scores");
+    return JSON.parse(scores || "[]");
+}
+
 Array.prototype.randomizeArray = randomizeArray;

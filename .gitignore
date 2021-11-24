@@ -1,9 +1,0 @@
-/*
-!/.gitignore
-!/README.md
-!/01_prueba_nivel
-!/02_framework_backend
-!/03_framework_frontend
-**/node_modules
-.DS_Store
-.idea
